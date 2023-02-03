@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent {
 
   constructor (
     public login: FormBuilder,
+    private loginService: LoginService,
     private message: NzMessageService,
     private router: Router
   ) { }
@@ -27,7 +29,7 @@ export class LoginComponent {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit() {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
@@ -40,15 +42,24 @@ export class LoginComponent {
 
     if (this.validateForm.status == 'VALID') {
       let { username, password } = this.validateForm.value;
-      if (username == 'admin' && password == 'admin') {
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
-        sessionStorage.setItem('token', token);
 
-        this.message.create('success', 'เข้าสู่ระบบสำเร็จ');
+      const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+      try {
+        const response: any = await this.loginService.login(username, password);
+        this.message.remove(messageId);
+        if (response.data) {
+          const token = response.data.access_token;
+          sessionStorage.setItem('token', token);
+          this.message.create('success', 'เข้าสู่ระบบสำเร็จ');
+          this.router.navigate(['/dashboard']);
 
-        this.router.navigate(['/dashboard'])
-      } else {
-        this.message.create('error', 'ชื่อผู้ใช้งาน/รหัสผ่าน ไม่ถูกต้อง');
+          return;
+        } else {
+          this.message.create('error', 'ชื่อผู้ใช้งาน/รหัสผ่าน ไม่ถูกต้อง');
+        }
+      } catch (error: any) {
+        this.message.remove(messageId);
+        this.message.error(`${error.code} - ${error.message}`);
       }
     }
   }

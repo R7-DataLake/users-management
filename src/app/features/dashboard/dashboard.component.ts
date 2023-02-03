@@ -11,13 +11,22 @@ export class DashboardComponent {
 
   userUsageChartOption: EChartsOption = {
     title: {
-      text: 'สถิติการใช้งาน'
+      text: 'สถิติการใช้งาน',
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     legend: {
-      data: ['มหาสารคาม', 'ขอนแก่น', 'ร้อยเอ็ด', 'กาฬสินธุ์']
+      data: ['มหาสารคาม', 'ขอนแก่น', 'ร้อยเอ็ด', 'กาฬสินธุ์'],
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     grid: {
       left: '3%',
@@ -32,8 +41,11 @@ export class DashboardComponent {
     // },
     xAxis: {
       type: 'category',
+      nameTextStyle: {
+        fontFamily: "Kanit"
+      },
       boundaryGap: true,
-      data: ['11 ม.ค.', '12 ม.ค.', '13 ม.ค.', '14 ม.ค.', '15 ม.ค.', '16 ม.ค.', '17 ม.ค.']
+      data: ['11 ม.ค.', '12 ม.ค.', '13 ม.ค.', '14 ม.ค.', '15 ม.ค.', '16 ม.ค.', '17 ม.ค.'],
     },
     yAxis: {
       type: 'value'
@@ -72,16 +84,25 @@ export class DashboardComponent {
 
   userPiChartOption: EChartsOption = {
     tooltip: {
-      trigger: 'item'
+      trigger: 'item',
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     title: {
       text: 'จำนวนผู้ใช้งานในระบบ',
       subtext: 'ณ วันที่ 21 ม.ค. 2566 เวลา 18:00 น.',
-      left: 'center'
+      left: 'center',
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     legend: {
       orient: 'horizontal',
-      bottom: 'bottom'
+      bottom: 'bottom',
+      textStyle: {
+        fontFamily: "Kanit"
+      }
     },
     series: [
       {
