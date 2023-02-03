@@ -1,1 +1,1 @@
-docker build -t r7platform/usm-web . --no-cache
+docker build -t mophos/r7platform-usm-web . --no-cache
