@@ -43,19 +43,25 @@ export class ModalNewUserComponent {
       enabled: [true]
     });
 
-    // Get zones
-    this.getZones();
-
   }
 
   showModal(id: any = ''): void {
     this.validateForm.reset()
+    this.validateForm.controls['username'].enable()
+    this.validateForm.controls['password'].enable()
+    this.validateForm.controls['zoneCode'].enable()
+
     this.userId = id
+
+    this.isVisible = true
+
     if (id) {
       this.getUserInfo(id)
     }
 
-    this.isVisible = true
+    // Get zones
+    this.getZones();
+
   }
 
   handleOk(): void {
@@ -168,6 +174,7 @@ export class ModalNewUserComponent {
 
       this.validateForm.controls['username'].disable()
       this.validateForm.controls['password'].disable()
+      this.validateForm.controls['zoneCode'].disable()
 
       this.message.remove(messageId)
     } catch (error: any) {

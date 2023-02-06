@@ -26,8 +26,8 @@ export class HospitalsComponent {
     private message: NzMessageService) { }
 
   ngOnInit() {
-    this.getHospitalList();
-    this.getZones();
+    this.getHospitalList()
+    this.getZones()
   }
 
   onBack(): void {
