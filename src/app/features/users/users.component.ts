@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { DateTime } from 'luxon';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import * as _ from 'lodash';
 
 import { UserList } from '../../core/model/user';
-import { ModalNewUserComponent } from './modals/modal-new-user/modal-new-user.component';
-import { UserService } from './services/user.service';
 import { LibService } from '../../shared/services/lib.service';
 import { ModalChangePasswordComponent } from './modals/modal-change-password/modal-change-password.component';
+import { ModalNewUserComponent } from './modals/modal-new-user/modal-new-user.component';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-users',
