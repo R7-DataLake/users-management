@@ -51,11 +51,11 @@ export class ModalNewUserComponent {
     this.validateForm.controls['password'].enable()
     this.validateForm.controls['zoneCode'].enable()
 
-    this.userId = id
-
     this.isVisible = true
+    this.userId = '';
 
     if (id) {
+      this.userId = id
       this.getUserInfo(id)
     }
 
