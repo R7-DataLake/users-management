@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://r7app.moph.go.th/platform/emrservices/user-management'
+  apiUrl: 'https://r7.moph.go.th/platform/api/users'
 };

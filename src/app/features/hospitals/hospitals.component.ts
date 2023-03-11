@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DateTime } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HospitalList } from '../../core/model/hospital';
 import { LibService } from '../../shared/services/lib.service';
@@ -26,8 +25,8 @@ export class HospitalsComponent {
     private message: NzMessageService) { }
 
   ngOnInit() {
-    this.getHospitalList();
-    this.getZones();
+    this.getHospitalList()
+    this.getZones()
   }
 
   onBack(): void {

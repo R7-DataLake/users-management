@@ -38,7 +38,7 @@ export class HospitalService {
   }
 
   async save(hospital: ICreateHospital) {
-    return await this.axiosInstance.post('/hospials', hospital)
+    return await this.axiosInstance.post('/hospitals', hospital)
   }
 
   async update(hospcode: any, hospital: IUpdateHospital) {

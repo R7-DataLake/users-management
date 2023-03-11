@@ -35,9 +35,6 @@ export class ModalNewHospitalComponent {
       enabled: [true]
     });
 
-    // Get zones
-    this.getZones();
-
   }
 
   showModal(hospcode: any = ''): void {
@@ -45,11 +42,14 @@ export class ModalNewHospitalComponent {
     this.validateForm.reset()
     this.validateForm.controls['hospcode'].enable()
     this.hospcode = hospcode
+    this.isVisible = true
+
+    // Get zones
+    this.getZones()
+
     if (hospcode) {
       this.getHospitalInfo(hospcode)
     }
-
-    this.isVisible = true
   }
 
   handleOk(): void {
