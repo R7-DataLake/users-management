@@ -124,12 +124,12 @@ export class DashboardComponent implements OnInit {
     const keys = Object.keys(labelGroup);
 
     const series: any = [];
+
     for await (const l of keys) {
 
       let obj: any = {
         name: l,
         type: 'line',
-        stack: 'Total',
         smooth: true,
         data: []
       };
