@@ -1,16 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import * as _ from 'lodash';
 import { DateTime } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
-import * as _ from 'lodash';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { UserList } from '../../core/model/user';
 import { LibService } from '../../shared/services/lib.service';
-import { ModalChangePasswordComponent } from './modals/modal-change-password/modal-change-password.component';
+import {
+  ModalChangePasswordComponent
+} from './modals/modal-change-password/modal-change-password.component';
 import { ModalNewUserComponent } from './modals/modal-new-user/modal-new-user.component';
 import { UserService } from './services/user.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-users',
@@ -80,7 +82,7 @@ export class UsersComponent {
   }
 
   async getUserList() {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       const response = await this.userService.getUserList(this.zoneCode);
       this.usersDataSet = response.data.map((v: any) => {
@@ -109,7 +111,7 @@ export class UsersComponent {
   }
 
   private async _doDeleteUser(id: any) {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       await this.userService.delete(id);
       this.message.remove(messageId);
@@ -135,7 +137,7 @@ export class UsersComponent {
   }
 
   private async _doCancelDelete(id: any) {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       await this.userService.cancelDelete(id);
       this.message.remove(messageId);
