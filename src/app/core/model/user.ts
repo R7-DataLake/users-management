@@ -7,6 +7,7 @@ export interface UserList {
   hospcode: string;
   hospname: string;
   enabled: boolean;
+  is_deleted: boolean;
   zone_name: string;
   last_login: string;
 }
