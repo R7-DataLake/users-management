@@ -34,23 +34,18 @@
     <br>
     <div nz-row [nzGutter]="8">
       <div nz-col [nzSpan]="12">
-        <nz-table #basicTable nzBordered nzSize="small" nzTitle="ประวัติการส่งข้อมูลล่าสุด" [nzData]="historyDataSet">
+        <nz-table #hospitalSendTable nzBordered nzSize="small" nzTitle="ประวัติการส่งข้อมูลล่าสุด"
+          [nzData]="historyDataSet" [nzPageSize]="5" [nzLoading]="loadingLastSend">
           <thead>
             <tr>
-              <th>เวลา</th>
-              <!-- <th>ชื่อผู้ใช้งาน</th> -->
               <th>หน่วยบริการ</th>
-              <th>จำนวนเรคอร์ด</th>
+              <th>เวลา</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of basicTable.data">
-              <td>{{data.last_update}}</td>
-              <!-- <td>{{data.username}}</td> -->
+            <tr *ngFor="let data of hospitalSendTable.data">
               <td>{{data.hospcode}} {{data.hospname}}</td>
-              <td>
-                {{data.total_records}}
-              </td>
+              <td>{{data.last_update}}</td>
             </tr>
           </tbody>
         </nz-table>
@@ -58,7 +53,7 @@
 
       <div nz-col [nzSpan]="12">
         <nz-table #notSendData nzBordered nzSize="small" nzTitle="หน่วยบริการที่ไม่ส่งข้อมูล"
-          [nzData]="hospitalNotSendDataSet">
+          [nzData]="hospitalNotSendDataSet" [nzPageSize]="5" [nzLoading]="loadingDoNotSend">
           <thead>
             <tr>
               <th>หน่วยบริการ</th>

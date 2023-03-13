@@ -3,7 +3,7 @@ import { ECharts, EChartsOption } from 'echarts';
 import * as _ from 'lodash';
 import { DateTime, Interval } from 'luxon';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { UserSendList, HospitalNotSendData } from '../../core/model/usage';
+import { HospitalSendList, HospitalNotSendData } from '../../core/model/usage';
 import { ReportService } from '../../shared/services/report.service';
 
 @Component({
@@ -13,23 +13,7 @@ import { ReportService } from '../../shared/services/report.service';
 })
 export class DashboardComponent implements OnInit {
 
-  historyDataSet: UserSendList[] = [
-    {
-      username: 'u11053',
-      hospcode: '11053',
-      hospname: 'รพ.กันทรวิชัย',
-      last_update: '13 ม.ค. 2566 เวลา 12:45:05',
-      total_records: 500,
-    },
-    {
-      username: 'u10707',
-      hospcode: '10707',
-      hospname: 'รพท.มหาสารคาม',
-      last_update: '12 ม.ค. 2566 เวลา 11:49:45',
-      total_records: 1500,
-    },
-
-  ];
+  historyDataSet: HospitalSendList[] = [];
 
   hospitalNotSendDataSet: HospitalNotSendData[] = [
     {
@@ -51,6 +35,9 @@ export class DashboardComponent implements OnInit {
 
   loadingLastSending = false;
   loadingTotalUsers = false;
+
+  loadingLastSend = false;
+  loadingDoNotSend = false;
 
   lastSendingChartInstance!: ECharts;
   totalUserChartInstance!: ECharts;
@@ -78,7 +65,10 @@ export class DashboardComponent implements OnInit {
     this.dates = data;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this._getLastSend();
+    this._getHospitalDoNotSend();
+  }
 
   onLastSendingChartInit(echart: any) {
     this.lastSendingChartInstance = echart;
@@ -261,5 +251,39 @@ export class DashboardComponent implements OnInit {
       ],
     });
 
+  }
+
+  private async _getLastSend() {
+    this.loadingLastSend = true;
+    try {
+      const response: any = await this.reportService.getLastSend();
+      this.loadingLastSend = false;
+      const data: any = response.data.results || [];
+      this.historyDataSet = data.map((v: any) => {
+        v.last_update = DateTime.fromISO(v.last_update, { zone: 'Asia/Bangkok', locale: 'th' }).toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS);
+        return v;
+      });
+    } catch (error) {
+      this.loadingLastSend = false;
+      console.log(error);
+      this.message.error('เกิดข้อผิดพลาด [TOTAL USERS]');
+    }
+  }
+
+  private async _getHospitalDoNotSend() {
+    this.loadingDoNotSend = true;
+    try {
+      const response: any = await this.reportService.getDoNotSend();
+      this.loadingDoNotSend = false;
+      const data: any = response.data.results || [];
+      this.hospitalNotSendDataSet = data.map((v: any) => {
+        v.last_update = DateTime.fromISO(v.last_update, { zone: 'Asia/Bangkok', locale: 'th' }).toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS);
+        return v;
+      });
+    } catch (error) {
+      this.loadingDoNotSend = false;
+      console.log(error);
+      this.message.error('เกิดข้อผิดพลาด [TOTAL USERS]');
+    }
   }
 }

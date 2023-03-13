@@ -1,9 +1,7 @@
-export interface UserSendList {
-  username: string;
+export interface HospitalSendList {
   hospcode: string;
   hospname: string;
   last_update: string;
-  total_records: number;
 }
 
 export interface HospitalNotSendData {

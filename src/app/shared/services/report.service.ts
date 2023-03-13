@@ -32,6 +32,16 @@ export class ReportService {
     return this.axiosInstance.get(url);
   }
 
+  async getLastSend() {
+    const url = `/hospital-last-send`;
+    return this.axiosInstance.get(url);
+  }
+
+  async getDoNotSend() {
+    const url = `/donot-send`;
+    return this.axiosInstance.get(url);
+  }
+
   async getLastSendings(start: any, end: any) {
     const url = `/last-sending?start=${start}&end=${end}`;
     return this.axiosInstance.get(url);
