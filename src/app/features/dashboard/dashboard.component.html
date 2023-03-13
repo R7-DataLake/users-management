@@ -9,17 +9,24 @@
     </nz-breadcrumb-item>
   </nz-breadcrumb>
   <div class="inner-content">
-
     <div nz-row [nzGutter]="8">
       <div nz-col [nzSpan]="8">
         <nz-card>
-          <div echarts [options]="userPiChartOption" style="height: 320px;"></div>
+          <nz-spin nzTip="Loading..." [nzSpinning]="loadingTotalUsers">
+            <div echarts [options]="totalUserPieChartOption" (chartInit)="onTotalUsersChartInit($event)"
+              style="height: 320px;">
+            </div>
+          </nz-spin>
         </nz-card>
       </div>
-
       <div nz-col [nzSpan]="16">
         <nz-card>
-          <div echarts [options]="userUsageChartOption" style="height: 320px;"></div>
+          <nz-spin nzTip="Loading..." [nzSpinning]="loadingLastSending">
+            <div echarts [options]="lastSendingLineChartOption" (chartInit)="onLastSendingChartInit($event)"
+              style="height: 320px;">
+            </div>
+          </nz-spin>
+
         </nz-card>
       </div>
     </div>
@@ -27,7 +34,7 @@
     <br>
     <div nz-row [nzGutter]="8">
       <div nz-col [nzSpan]="12">
-        <nz-table #basicTable nzBordered nzSize="small" nzTitle="ประวัติการใช้งานล่าสุด" [nzData]="historyDataSet">
+        <nz-table #basicTable nzBordered nzSize="small" nzTitle="ประวัติการส่งข้อมูลล่าสุด" [nzData]="historyDataSet">
           <thead>
             <tr>
               <th>เวลา</th>
