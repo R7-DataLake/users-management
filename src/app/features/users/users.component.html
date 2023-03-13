@@ -1,7 +1,12 @@
 <nz-content>
   <nz-breadcrumb>
-    <nz-breadcrumb-item>Dashboard</nz-breadcrumb-item>
-    <nz-breadcrumb-item>รายชื่อผู้ใช้งาน</nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="home"></span>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="team"></span>
+      รายชื่อผู้ใช้งาน
+    </nz-breadcrumb-item>
   </nz-breadcrumb>
   <nz-page-header style="background-color: white;" class="site-page-header" (nzBack)="onBack()" nzBackIcon
     nzTitle="ทะเบียนผู้ใช้งาน" nzSubtitle="รายชื่อผู้ใช้งานในระบบ">
@@ -26,7 +31,8 @@
           <th>ชื่อ - สกุล</th>
           <th>หน่วยบริการ</th>
           <th>โซน</th>
-          <th>สถานะ</th>
+          <th>เปิดใช้งาน</th>
+          <th>ยกเลิก</th>
           <th>เข้าใช้งานล่าสุด</th>
           <th></th>
         </tr>
@@ -43,16 +49,28 @@
             <span *ngIf="!data.enabled" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
               [nzTwotoneColor]="'#eb2f96'"></span>
           </td>
+          <td style="text-align: center;">
+            <span *ngIf="!data.is_deleted" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#52c41a'"></span>
+            <span *ngIf="data.is_deleted" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#eb2f96'"></span>
+          </td>
           <td>{{data.last_login}}</td>
           <td style="text-align: center;">
-            <nz-button-group>
-              <button (click)="openEditUser(data.id)" nz-button nzType="default" nzTooltipTitle="แก้ไข"><span nz-icon
-                  nzType="edit"></span></button>
-              <button (click)="changePassword(data.id)" nz-button nzType="default"
-                nzTooltipTitle="เปลี่ยนรหัสผ่าน"><span nz-icon nzType="form"></span></button>
-              <button nz-button nzType="default" disabled><span nz-icon nzType="area-chart"
-                  nzTooltipTitle="ประวัติการใช้งาน"></span></button>
-            </nz-button-group>
+            <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+              <span nz-icon nzType="menu"></span>
+              จัดการ
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu nzSelectable>
+                <li nz-menu-item (click)="openEditUser(data.id)">แก้ไขข้อมูล</li>
+                <li nz-menu-item (click)="changePassword(data.id)">เปลี่ยนรหัสผ่าน</li>
+                <li nz-menu-item (click)="confirmDelete(data)" *ngIf="!data.is_deleted" nzDanger>
+                  ยกเลิกรายการ</li>
+                <li nz-menu-item (click)="confirmCancelDelete(data)" *ngIf="data.is_deleted">
+                  เปิดใช้งานอีกครั้ง</li>
+              </ul>
+            </nz-dropdown-menu>
           </td>
         </tr>
       </tbody>

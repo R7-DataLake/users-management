@@ -1,7 +1,9 @@
 
+import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { Component, EventEmitter, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
+
 import { ICreateUser, IUpdateUser } from '../../../../core/model/user';
 import { RandomstringService } from '../../../../core/services/randomstring.service';
 import { LibService } from '../../../../shared/services/lib.service';
@@ -22,7 +24,7 @@ export class ModalNewUserComponent {
   isVisible = false;
   hospitals: any = [];
   zones: any = [];
-  userId: any = '';
+  userId: any = null;
 
   constructor (
     private randomString: RandomstringService,
@@ -52,7 +54,7 @@ export class ModalNewUserComponent {
     this.validateForm.controls['zoneCode'].enable()
 
     this.isVisible = true
-    this.userId = '';
+    this.userId = null;
 
     if (id) {
       this.userId = id
