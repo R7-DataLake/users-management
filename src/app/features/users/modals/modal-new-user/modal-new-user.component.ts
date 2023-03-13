@@ -113,7 +113,7 @@ export class ModalNewUserComponent {
 
   async doRegister(user: ICreateUser) {
     this.isOkLoading = true
-    const messageId = this.message.loading('กำลังบันทึกข้อมูล...', { nzDuration: 0 }).messageId
+    const messageId = this.message.loading('กำลังบันทึกข้อมูล...').messageId
     try {
       await this.userService.save(user)
       this.message.remove(messageId)
@@ -153,7 +153,7 @@ export class ModalNewUserComponent {
   }
 
   async getUserInfo(id: any) {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       const response: any = await this.userService.info(id);
       const user = response.data
@@ -186,7 +186,7 @@ export class ModalNewUserComponent {
   }
 
   async getHospitals(zoneCode: any) {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       const response = await this.libService.getHospitals(zoneCode);
       this.hospitals = response.data;
@@ -198,7 +198,7 @@ export class ModalNewUserComponent {
   }
 
   async getZones() {
-    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    const messageId = this.message.loading('Loading...').messageId;
     try {
       const response = await this.libService.getZones();
       this.zones = response.data.map((v: any) => {

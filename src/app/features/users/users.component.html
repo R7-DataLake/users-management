@@ -41,7 +41,7 @@
         <tr *ngFor="let data of userTable.data">
           <td>{{data.username}}</td>
           <td>{{data.first_name}} {{data.last_name}}</td>
-          <td>{{data.hospcode}} {{data.hospname}}</td>
+          <td>{{data.hospname}} ({{data.hospcode}})</td>
           <td>{{data.zone_name}}</td>
           <td style="text-align: center;">
             <span *ngIf="data.enabled" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
