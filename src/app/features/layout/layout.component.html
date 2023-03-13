@@ -28,12 +28,12 @@
         <div nz-col nzFlex="auto"></div>
         <div nz-col nzFlex="200px" style="text-align: right; padding-right: 16px;">
           <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-            Satit Rianpit
+            เมนูส่วนตัว
             <span nz-icon nzType="down"></span>
           </a>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item>เปลี่ยนรหัสผ่าน</li>
+              <li nz-menu-item nzDisabled>เปลี่ยนรหัสผ่าน</li>
               <li nz-menu-item nzDisabled>แก้ไขข้อมูลส่วนตัว</li>
               <li nz-menu-divider></li>
               <li nz-menu-item (click)="logout()">ออกจากระบบ</li>
