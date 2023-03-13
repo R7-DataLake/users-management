@@ -46,6 +46,14 @@ export class UserService {
     return await this.axiosInstance.put(`/users/${id}/edit`, user)
   }
 
+  async delete(id: any) {
+    return await this.axiosInstance.put(`/users/${id}/delete`)
+  }
+
+  async cancelDelete(id: any) {
+    return await this.axiosInstance.put(`/users/${id}/cancel-delete`)
+  }
+
   async changePassword(id: any, password: any) {
     return await this.axiosInstance.put(`/users/change-password`, {
       id,

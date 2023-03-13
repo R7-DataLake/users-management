@@ -10,6 +10,7 @@ import { LibService } from '../../shared/services/lib.service';
 import { ModalChangePasswordComponent } from './modals/modal-change-password/modal-change-password.component';
 import { ModalNewUserComponent } from './modals/modal-new-user/modal-new-user.component';
 import { UserService } from './services/user.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-users',
@@ -28,7 +29,8 @@ export class UsersComponent {
     private router: Router,
     private userService: UserService,
     private libService: LibService,
-    private message: NzMessageService) { }
+    private message: NzMessageService,
+    private modal: NzModalService) { }
 
   ngOnInit() {
     this.getUserList();
@@ -87,6 +89,58 @@ export class UsersComponent {
         return v;
       });
       this.message.remove(messageId);
+    } catch (error: any) {
+      this.message.remove(messageId);
+      this.message.error(`${error.code} - ${error.message}`);
+    }
+  }
+
+  async confirmDelete(user: any) {
+    this.modal.confirm({
+      nzTitle: 'ยืนยันยกเลิกรายการ?',
+      nzContent: `ต้องการยกเลิกรายการผู้ใช้งานนี้ (${user.first_name} ${user.last_name}) ใช่หรือไม่?`,
+      nzOkText: 'ใช่',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this._doDeleteUser(user.id),
+      nzCancelText: 'ไม่ใช่',
+      nzOnCancel: () => { }
+    });
+  }
+
+  private async _doDeleteUser(id: any) {
+    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    try {
+      await this.userService.delete(id);
+      this.message.remove(messageId);
+      this.message.success('ยกเลิกรายการเรียบร้อย');
+      this.getUserList();
+    } catch (error: any) {
+      this.message.remove(messageId);
+      this.message.error(`${error.code} - ${error.message}`);
+    }
+  }
+
+  async confirmCancelDelete(user: any) {
+    this.modal.confirm({
+      nzTitle: 'ยืนยัน?',
+      nzContent: `ต้องการให้รายการนี้ (${user.first_name} ${user.last_name}) กลับมาใช้งานได้อีก ใช่หรือไม่?`,
+      nzOkText: 'ใช่',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this._doCancelDelete(user.id),
+      nzCancelText: 'ไม่ใช่',
+      nzOnCancel: () => { }
+    });
+  }
+
+  private async _doCancelDelete(id: any) {
+    const messageId = this.message.loading('Loading...', { nzDuration: 0 }).messageId;
+    try {
+      await this.userService.cancelDelete(id);
+      this.message.remove(messageId);
+      this.message.success('รายการนี้สามารถกลับมาใช้ได้ใหม่อีกครั้ง');
+      this.getUserList();
     } catch (error: any) {
       this.message.remove(messageId);
       this.message.error(`${error.code} - ${error.message}`);

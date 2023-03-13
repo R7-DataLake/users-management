@@ -21,6 +21,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @NgModule({
   declarations: [],
@@ -45,7 +46,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzSpaceModule,
     NzToolTipModule,
     NzSelectModule,
-    NzModalModule
+    NzModalModule,
+    NzPopconfirmModule
   ],
   exports: [
     NzFormModule,
@@ -67,7 +69,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzSpaceModule,
     NzToolTipModule,
     NzSelectModule,
-    NzModalModule
+    NzModalModule,
+    NzPopconfirmModule
   ]
 })
 export class NgZorroModule { }
