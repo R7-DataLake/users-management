@@ -239,7 +239,7 @@ export class DashboardComponent implements OnInit {
           emphasis: {
             label: {
               show: true,
-              fontSize: 30,
+              fontSize: 20,
               fontWeight: 'bold'
             }
           },
