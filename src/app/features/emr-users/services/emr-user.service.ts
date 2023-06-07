@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core'
-import axios from 'axios'
-import { environment } from '../../../../environments/environment'
-import { ICreateUser, IUpdateUser } from '../../../core/model/user'
+import { Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment';
+import axios from 'axios';
+import { ICreateEMRUser, IUpdateEMRUser } from '../../../core/model/emr_user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class EmrUserService {
 
   private axiosInstance = axios.create({
     baseURL: environment.apiUrl
@@ -29,33 +29,33 @@ export class UserService {
   }
 
   async getUserList(zoneCode: any = '') {
-    const url = `/users?zone_code=${zoneCode}`
+    const url = `/emr-users?zone_code=${zoneCode}`
     return await this.axiosInstance.get(url)
   }
 
   async info(id: any) {
-    const url = `/users/${id}/info`
+    const url = `/emr-users/${id}/info`
     return await this.axiosInstance.get(url)
   }
 
-  async save(user: ICreateUser) {
-    return await this.axiosInstance.post('/users', user)
+  async save(user: ICreateEMRUser) {
+    return await this.axiosInstance.post('/emr-users', user)
   }
 
-  async update(id: any, user: IUpdateUser) {
-    return await this.axiosInstance.put(`/users/${id}/edit`, user)
+  async update(id: any, user: IUpdateEMRUser) {
+    return await this.axiosInstance.put(`/emr-users/${id}/edit`, user)
   }
 
   async delete(id: any) {
-    return await this.axiosInstance.put(`/users/${id}/delete`)
+    return await this.axiosInstance.put(`/emr-users/${id}/delete`)
   }
 
   async cancelDelete(id: any) {
-    return await this.axiosInstance.put(`/users/${id}/cancel-delete`)
+    return await this.axiosInstance.put(`/emr-users/${id}/cancel-delete`)
   }
 
   async changePassword(id: any, password: any) {
-    return await this.axiosInstance.put(`/users/change-password`, {
+    return await this.axiosInstance.put(`/emr-users/change-password`, {
       id,
       password
     })

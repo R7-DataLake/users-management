@@ -1,0 +1,89 @@
+<nz-content>
+  <nz-breadcrumb>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="home"></span>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+      <span nz-icon nzType="team"></span>
+      รายชื่อผู้ใช้งาน (ระบบ EMR)
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+  <nz-page-header style="background-color: white;" class="site-page-header" (nzBack)="onBack()" nzBackIcon
+    nzTitle="ทะเบียนผู้ใช้งาน (ระบบ EMR)">
+    <nz-page-header-extra>
+      <nz-space>
+        <nz-select style="width: 220px;" ngModel="zoneCode" *nzSpaceItem id="zoneCode" name="zoneCode"
+          (ngModelChange)="onChangeZone($event)">
+          <nz-option nzValue="" nzLabel="ทุกโซน"></nz-option>
+          <nz-option *ngFor="let zone of zones" [nzValue]="zone.code" [nzLabel]="zone.name"></nz-option>
+        </nz-select>
+        <button *nzSpaceItem nz-button disabled>ค้นหา...</button>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="openNewUserRegister()">+ เพิ่มผู้ใช้งาน</button>
+      </nz-space>
+    </nz-page-header-extra>
+  </nz-page-header>
+  <div class="inner-content">
+
+    <nz-table #userTable nzSize="small" [nzHideOnSinglePage]="true" [nzData]="usersDataSet">
+      <thead>
+        <tr>
+          <th>เลขบัตรประชาชน</th>
+          <th>ชื่อ - สกุล</th>
+          <th>หน่วยบริการ</th>
+          <th>โซน</th>
+          <th style="text-align: center;">เปิดใช้งาน</th>
+          <th style="text-align: center;">ยกเลิก</th>
+          <th style="text-align: center;">ยืนยันตัวตน</th>
+          <th style="text-align: center;">เข้าใช้งานล่าสุด</th>
+          <th style="text-align: center;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of userTable.data">
+          <td>{{data.cid}}</td>
+          <td>{{data.first_name}} {{data.last_name}}</td>
+          <td>{{data.hospname}} ({{data.hospcode}})</td>
+          <td>{{data.zone_name}}</td>
+          <td style="text-align: center;">
+            <span *ngIf="data.enabled" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#52c41a'"></span>
+            <span *ngIf="!data.enabled" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#eb2f96'"></span>
+          </td>
+          <td style="text-align: center;">
+            <span *ngIf="!data.is_deleted" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#52c41a'"></span>
+            <span *ngIf="data.is_deleted" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#eb2f96'"></span>
+          </td>
+          <td style="text-align: center;">
+            <span *ngIf="data.is_verified" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#52c41a'"></span>
+            <span *ngIf="!data.is_verified" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#eb2f96'"></span>
+          </td>
+          <td style="text-align: center;">{{data.last_login}}</td>
+          <td style="text-align: center;">
+            <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+              <span nz-icon nzType="menu"></span>
+              จัดการ
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu nzSelectable>
+                <li nz-menu-item (click)="openEditUser(data.id)">แก้ไขข้อมูล</li>
+                <li nz-menu-item (click)="changePassword(data)">เปลี่ยนรหัสผ่าน</li>
+                <li nz-menu-item (click)="confirmDelete(data)" *ngIf="!data.is_deleted" nzDanger>
+                  ยกเลิกรายการ</li>
+                <li nz-menu-item (click)="confirmCancelDelete(data)" *ngIf="data.is_deleted">
+                  เปิดใช้งานอีกครั้ง</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</nz-content>
+
+<app-modal-new-emr-user #mdlNewUser (onSubmit)="onSubmitRegister($event)"></app-modal-new-emr-user>
+<app-modal-emr-change-password #mdlChangePassword></app-modal-emr-change-password>

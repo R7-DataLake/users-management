@@ -1,35 +1,32 @@
-import * as _ from 'lodash';
-import { DateTime } from 'luxon';
+import { Component, ViewChild } from '@angular/core';
+import { UserList } from '../../core/model/user';
+import { Router } from '@angular/router';
+import { LibService } from '../../shared/services/lib.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalService } from 'ng-zorro-antd/modal';
-
-import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { UserList } from '../../core/model/user';
-import { LibService } from '../../shared/services/lib.service';
-import {
-  ModalChangePasswordComponent
-} from './modals/modal-change-password/modal-change-password.component';
-import { ModalNewUserComponent } from './modals/modal-new-user/modal-new-user.component';
-import { UserService } from './services/user.service';
+import { DateTime } from 'luxon';
+import { ModalNewEmrUserComponent } from './modals/modal-new-emr-user/modal-new-emr-user.component';
+import { EmrUserService } from './services/emr-user.service';
+import { EMRUserList } from '../../core/model/emr_user';
+import { ModalEmrChangePasswordComponent } from './modals/modal-emr-change-password/modal-emr-change-password.component';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  selector: 'app-emr-users',
+  templateUrl: './emr-users.component.html',
+  styleUrls: ['./emr-users.component.css']
 })
-export class UsersComponent {
-  @ViewChild('mdlNewUser') private mdlNewUser!: ModalNewUserComponent;
-  @ViewChild('mdlChangePassword') private mdlChangePassword!: ModalChangePasswordComponent;
+export class EmrUsersComponent {
+
+  @ViewChild('mdlNewUser') private mdlNewUser!: ModalNewEmrUserComponent;
+  @ViewChild('mdlChangePassword') private mdlChangePassword!: ModalEmrChangePasswordComponent;
 
   zoneCode: any = '';
-  usersDataSet: UserList[] = [];
+  usersDataSet: EMRUserList[] = [];
   zones: any = [];
 
   constructor (
     private router: Router,
-    private userService: UserService,
+    private userService: EmrUserService,
     private libService: LibService,
     private message: NzMessageService,
     private modal: NzModalService) { }
@@ -62,8 +59,8 @@ export class UsersComponent {
     this.getUserList();
   }
 
-  changePassword(id: any) {
-    this.mdlChangePassword.showModal(id)
+  changePassword(user: any) {
+    this.mdlChangePassword.showModal(user.id, user.cid)
   }
 
   async getZones() {
@@ -148,4 +145,5 @@ export class UsersComponent {
       this.message.error(`${error.code} - ${error.message}`);
     }
   }
+
 }
