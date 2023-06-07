@@ -5,11 +5,11 @@
     </nz-breadcrumb-item>
     <nz-breadcrumb-item>
       <span nz-icon nzType="team"></span>
-      รายชื่อผู้ใช้งาน
+      รายชื่อผู้ใช้งาน (ระบบ EMR)
     </nz-breadcrumb-item>
   </nz-breadcrumb>
   <nz-page-header style="background-color: white;" class="site-page-header" (nzBack)="onBack()" nzBackIcon
-    nzTitle="ทะเบียนผู้ใช้งาน" nzSubtitle="รายชื่อผู้ใช้งานในระบบ">
+    nzTitle="ทะเบียนผู้ใช้งาน (ระบบ EMR)">
     <nz-page-header-extra>
       <nz-space>
         <nz-select style="width: 220px;" ngModel="zoneCode" *nzSpaceItem id="zoneCode" name="zoneCode"
@@ -27,19 +27,20 @@
     <nz-table #userTable nzSize="small" [nzHideOnSinglePage]="true" [nzData]="usersDataSet">
       <thead>
         <tr>
-          <th>ชื่อผู้ใช้งาน</th>
+          <th>เลขบัตรประชาชน</th>
           <th>ชื่อ - สกุล</th>
           <th>หน่วยบริการ</th>
           <th>โซน</th>
-          <th>เปิดใช้งาน</th>
-          <th>ยกเลิก</th>
-          <th>เข้าใช้งานล่าสุด</th>
-          <th></th>
+          <th style="text-align: center;">เปิดใช้งาน</th>
+          <th style="text-align: center;">ยกเลิก</th>
+          <th style="text-align: center;">ยืนยันตัวตน</th>
+          <th style="text-align: center;">เข้าใช้งานล่าสุด</th>
+          <th style="text-align: center;"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of userTable.data">
-          <td>{{data.username}}</td>
+          <td>{{data.cid}}</td>
           <td>{{data.first_name}} {{data.last_name}}</td>
           <td>{{data.hospname}} ({{data.hospcode}})</td>
           <td>{{data.zone_name}}</td>
@@ -55,7 +56,13 @@
             <span *ngIf="data.is_deleted" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
               [nzTwotoneColor]="'#eb2f96'"></span>
           </td>
-          <td>{{data.last_login}}</td>
+          <td style="text-align: center;">
+            <span *ngIf="data.is_verified" nz-icon nzType="check-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#52c41a'"></span>
+            <span *ngIf="!data.is_verified" nz-icon nzType="close-circle" nzTheme="outline" [nzTheme]="'twotone'"
+              [nzTwotoneColor]="'#eb2f96'"></span>
+          </td>
+          <td style="text-align: center;">{{data.last_login}}</td>
           <td style="text-align: center;">
             <button nz-button nz-dropdown [nzDropdownMenu]="menu">
               <span nz-icon nzType="menu"></span>
@@ -64,7 +71,7 @@
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu nzSelectable>
                 <li nz-menu-item (click)="openEditUser(data.id)">แก้ไขข้อมูล</li>
-                <li nz-menu-item (click)="changePassword(data.id)">เปลี่ยนรหัสผ่าน</li>
+                <li nz-menu-item (click)="changePassword(data)">เปลี่ยนรหัสผ่าน</li>
                 <li nz-menu-item (click)="confirmDelete(data)" *ngIf="!data.is_deleted" nzDanger>
                   ยกเลิกรายการ</li>
                 <li nz-menu-item (click)="confirmCancelDelete(data)" *ngIf="data.is_deleted">
@@ -78,5 +85,5 @@
   </div>
 </nz-content>
 
-<app-modal-new-user #mdlNewUser (onSubmit)="onSubmitRegister($event)"></app-modal-new-user>
-<app-modal-change-password #mdlChangePassword></app-modal-change-password>
+<app-modal-new-emr-user #mdlNewUser (onSubmit)="onSubmitRegister($event)"></app-modal-new-emr-user>
+<app-modal-emr-change-password #mdlChangePassword></app-modal-emr-change-password>

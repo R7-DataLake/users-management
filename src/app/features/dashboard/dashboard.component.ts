@@ -57,9 +57,12 @@ export class DashboardComponent implements OnInit {
     const interval = Interval.fromDateTimes(_start, _end).splitBy({ day: 1 }).map(d => d.start);
 
     let data = [];
-    for (const d of interval) {
-      const _d = d.toFormat('yyyy-MM-dd');
-      data.push(_d);
+
+    if (interval!.length) {
+      for (const d of interval) {
+        const _d = d!.toFormat('yyyy-MM-dd');
+        data.push(_d);
+      }
     }
 
     this.dates = data;
@@ -239,7 +242,7 @@ export class DashboardComponent implements OnInit {
           emphasis: {
             label: {
               show: true,
-              fontSize: 30,
+              fontSize: 20,
               fontWeight: 'bold'
             }
           },

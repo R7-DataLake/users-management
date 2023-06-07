@@ -22,6 +22,7 @@ const routes: Routes = [
         path: 'users',
         loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule)
       },
+      { path: 'emr-users', loadChildren: () => import('./features/emr-users/emr-users.module').then(m => m.EmrUsersModule) },
       {
         path: 'dashboard',
         loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)

@@ -1,20 +1,19 @@
-
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { Component, EventEmitter, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
-import { ICreateUser, IUpdateUser } from '../../../../core/model/user';
+import { ICreateEMRUser, IUpdateEMRUser } from '../../../../core/model/emr_user';
 import { RandomstringService } from '../../../../core/services/randomstring.service';
 import { LibService } from '../../../../shared/services/lib.service';
-import { UserService } from '../../services/user.service';
+import { EmrUserService } from '../../services/emr-user.service';
 
 @Component({
-  selector: 'app-modal-new-user',
-  templateUrl: './modal-new-user.component.html',
-  styleUrls: ['./modal-new-user.component.css']
+  selector: 'app-modal-new-emr-user',
+  templateUrl: './modal-new-emr-user.component.html',
+  styleUrls: ['./modal-new-emr-user.component.css']
 })
-export class ModalNewUserComponent {
+export class ModalNewEmrUserComponent {
 
   validateForm!: UntypedFormGroup;
 
@@ -29,13 +28,13 @@ export class ModalNewUserComponent {
   constructor (
     private randomString: RandomstringService,
     private libService: LibService,
-    private userService: UserService,
+    private emrUserService: EmrUserService,
     private message: NzMessageService,
     private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      username: [null, [Validators.required]],
+      cid: [null, [Validators.required]],
       password: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       firstName: [null, [Validators.required]],
@@ -49,7 +48,7 @@ export class ModalNewUserComponent {
 
   showModal(id: any = ''): void {
     this.validateForm.reset()
-    this.validateForm.controls['username'].enable()
+    this.validateForm.controls['cid'].enable()
     this.validateForm.controls['password'].enable()
     this.validateForm.controls['zoneCode'].enable()
 
@@ -69,7 +68,7 @@ export class ModalNewUserComponent {
   handleOk(): void {
     if (this.validateForm.valid) {
       if (this.userId) {
-        let user: IUpdateUser = {
+        let user: IUpdateEMRUser = {
           first_name: this.validateForm.value.firstName,
           last_name: this.validateForm.value.lastName,
           email: this.validateForm.value.email,
@@ -80,8 +79,8 @@ export class ModalNewUserComponent {
         this.doUpdate(user)
 
       } else {
-        let user: ICreateUser = {
-          username: this.validateForm.value.username,
+        let user: ICreateEMRUser = {
+          cid: this.validateForm.value.cid,
           password: this.validateForm.value.password,
           first_name: this.validateForm.value.firstName,
           last_name: this.validateForm.value.lastName,
@@ -111,11 +110,11 @@ export class ModalNewUserComponent {
     this.isVisible = false
   }
 
-  async doRegister(user: ICreateUser) {
+  async doRegister(user: ICreateEMRUser) {
     this.isOkLoading = true
     const messageId = this.message.loading('กำลังบันทึกข้อมูล...').messageId
     try {
-      await this.userService.save(user)
+      await this.emrUserService.save(user)
       this.message.remove(messageId)
       this.isOkLoading = false
       this.isVisible = false
@@ -127,11 +126,11 @@ export class ModalNewUserComponent {
     }
   }
 
-  async doUpdate(user: IUpdateUser) {
+  async doUpdate(user: IUpdateEMRUser) {
     this.isOkLoading = true
     const messageId = this.message.loading('กำลังบันทึกข้อมูล...', { nzDuration: 0 }).messageId
     try {
-      await this.userService.update(this.userId, user)
+      await this.emrUserService.update(this.userId, user)
       this.message.remove(messageId)
       this.isOkLoading = false
       this.isVisible = false
@@ -155,11 +154,11 @@ export class ModalNewUserComponent {
   async getUserInfo(id: any) {
     const messageId = this.message.loading('Loading...').messageId;
     try {
-      const response: any = await this.userService.info(id);
+      const response: any = await this.emrUserService.info(id);
       const user = response.data
 
       this.validateForm.patchValue({
-        username: user.username,
+        cid: user.cid,
         firstName: user.first_name,
         lastName: user.last_name,
         email: user.email,
@@ -174,7 +173,7 @@ export class ModalNewUserComponent {
         hospcode: user.hospcode,
       })
 
-      this.validateForm.controls['username'].disable()
+      this.validateForm.controls['cid'].disable()
       this.validateForm.controls['password'].disable()
       this.validateForm.controls['zoneCode'].disable()
 
@@ -202,7 +201,7 @@ export class ModalNewUserComponent {
     try {
       const response = await this.libService.getZones();
       this.zones = response.data.map((v: any) => {
-        v.name = `${v.name} (${v.ingress_zone})`;
+        v.name = `${v.name}`;
         return v;
       });
       this.message.remove(messageId);
